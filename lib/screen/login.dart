@@ -1,5 +1,6 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:e_commerce/screen/homescreen.dart';
+import 'package:e_commerce/screen/registre_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -46,7 +47,11 @@ class _loginScreenState extends State<loginScreen> {
                     ),
                   ),
                   onTap: () {
-                    // Get.to(RegisterView());
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RegistreScreen(),
+                            maintainState: false));
                   },
                 ),
               ],
