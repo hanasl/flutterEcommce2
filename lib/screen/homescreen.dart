@@ -12,8 +12,7 @@ class homescreen extends StatefulWidget {
 }
 
 class _homescreenState extends State<homescreen> {
-
- final List<String> names = <String>[
+  final List<String> names = <String>[
     'men',
     's',
     's',
@@ -64,7 +63,6 @@ class _homescreenState extends State<homescreen> {
           ),
         ),
       ),
-      
     );
   }
 
