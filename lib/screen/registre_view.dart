@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:e_commerce/screen/homescreen.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,8 @@ class _RegistreScreenState extends State<RegistreScreen> {
     String? email;
     String? password;
     String? name;
+    String? numero;
+    User? _user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -88,6 +91,30 @@ class _RegistreScreenState extends State<RegistreScreen> {
                   // hintStyle: GoogleFonts.raleway(),
                   // labelStyle: GoogleFonts.raleway(),
                   // counterStyle: GoogleFonts.raleway(),
+                  hintText: 'Numero',
+                  // border: OutlineInputBorder(
+                  //   borderRadius: BorderRadius.circular(35),
+                  // ),
+                  labelText: '  Enter your number',
+                  // counterText:
+                  //     '*Please use a verified e-mail',
+                ),
+                autofocus: false,
+                keyboardType: TextInputType.emailAddress,
+                maxLength: 40,
+                onChanged: (value) {
+                  numero = value;
+                },
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              TextField(
+                //cursorColor: secondaryColor,
+                decoration: InputDecoration(
+                  // hintStyle: GoogleFonts.raleway(),
+                  // labelStyle: GoogleFonts.raleway(),
+                  // counterStyle: GoogleFonts.raleway(),
                   hintText: 'address@mail.com',
                   // border: OutlineInputBorder(
                   //   borderRadius: BorderRadius.circular(35),
@@ -141,9 +168,51 @@ class _RegistreScreenState extends State<RegistreScreen> {
                           MaterialPageRoute(
                               builder: (context) => homescreen(),
                               maintainState: false));
-                      // Utilisateur enregistré avec succès
-                    } catch (e) {
-                      // Erreur d'enregistrement
+                      await FirebaseFirestore.instance
+                          .collection("utilisateur")
+                          .doc(_user!.uid)
+                          .set({
+                        "Email": email,
+                        "Password": password,
+                        "Name": name,
+                        "Number": numero,
+                      });
+                      await FirebaseFirestore.instance
+                          .collection("utilisateur")
+                          .doc(_user!.uid)
+                          .collection("Produit")
+                          .doc()
+                          .set({
+                        "Description": " ",
+                      });
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'weak-password') {
+                        var snackBar = SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'mot de passe faible',
+                                ),
+                              ],
+                            ));
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      } else if (e.code == 'email-already-in-use') {
+                        var snackBar = SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'cette addresse e-mail est déja utilisé',
+                                ),
+                              ],
+                            ));
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+                    } catch (ex) {
+                      print(ex);
                     }
                   }
                 },
