@@ -42,190 +42,193 @@ class _RegistreScreenState extends State<RegistreScreen> {
               color: Colors.black,
             )),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          top: 50,
-          right: 20,
-          left: 20,
-        ),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Text(
-                "Sign Up,",
-                style: TextStyle(
-                  fontSize: 30,
+      body: SingleChildScrollView(
+        child: Padding(
+          
+          padding: const EdgeInsets.only(
+            top: 50,
+            right: 20,
+            left: 20,
+          ),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Text(
+                  "Sign Up,",
+                  style: TextStyle(
+                    fontSize: 30,
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              TextField(
-                //cursorColor: secondaryColor,
-                decoration: InputDecoration(
-                  // hintStyle: GoogleFonts.raleway(),
-                  // labelStyle: GoogleFonts.raleway(),
-                  // counterStyle: GoogleFonts.raleway(),
-                  hintText: 'Name',
-                  // border: OutlineInputBorder(
-                  //   borderRadius: BorderRadius.circular(35),
-                  // ),
-                  labelText: '  Enter Name',
-                  // counterText:
-                  //     '*Please use a verified e-mail',
+                SizedBox(
+                  height: 30,
                 ),
-                autofocus: false,
-                keyboardType: TextInputType.emailAddress,
-                maxLength: 40,
-                onChanged: (value) {
-                  name = value;
-                },
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              TextField(
-                //cursorColor: secondaryColor,
-                decoration: InputDecoration(
-                  // hintStyle: GoogleFonts.raleway(),
-                  // labelStyle: GoogleFonts.raleway(),
-                  // counterStyle: GoogleFonts.raleway(),
-                  hintText: 'Numero',
-                  // border: OutlineInputBorder(
-                  //   borderRadius: BorderRadius.circular(35),
-                  // ),
-                  labelText: '  Enter your number',
-                  // counterText:
-                  //     '*Please use a verified e-mail',
+                TextField(
+                  //cursorColor: secondaryColor,
+                  decoration: InputDecoration(
+                    // hintStyle: GoogleFonts.raleway(),
+                    // labelStyle: GoogleFonts.raleway(),
+                    // counterStyle: GoogleFonts.raleway(),
+                    hintText: 'Name',
+                    // border: OutlineInputBorder(
+                    //   borderRadius: BorderRadius.circular(35),
+                    // ),
+                    labelText: '  Enter Name',
+                    // counterText:
+                    //     '*Please use a verified e-mail',
+                  ),
+                  autofocus: false,
+                  keyboardType: TextInputType.emailAddress,
+                  maxLength: 40,
+                  onChanged: (value) {
+                    name = value;
+                  },
                 ),
-                autofocus: false,
-                keyboardType: TextInputType.emailAddress,
-                maxLength: 40,
-                onChanged: (value) {
-                  numero = value;
-                },
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              TextField(
-                //cursorColor: secondaryColor,
-                decoration: InputDecoration(
-                  // hintStyle: GoogleFonts.raleway(),
-                  // labelStyle: GoogleFonts.raleway(),
-                  // counterStyle: GoogleFonts.raleway(),
-                  hintText: 'address@mail.com',
-                  // border: OutlineInputBorder(
-                  //   borderRadius: BorderRadius.circular(35),
-                  // ),
-                  labelText: '  addresse e-mail',
-                  // counterText:
-                  //     '*Please use a verified e-mail',
+                SizedBox(
+                  height: 30,
                 ),
-                autofocus: false,
-                keyboardType: TextInputType.emailAddress,
-                maxLength: 40,
-                onChanged: (value) {
-                  email = value;
-                },
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              TextField(
-                //cursorColor: secondaryColor,
-                decoration: InputDecoration(
-                  hintText: '*******',
-                  labelText: '  Password',
+                TextField(
+                  //cursorColor: secondaryColor,
+                  decoration: InputDecoration(
+                    // hintStyle: GoogleFonts.raleway(),
+                    // labelStyle: GoogleFonts.raleway(),
+                    // counterStyle: GoogleFonts.raleway(),
+                    hintText: 'Numero',
+                    // border: OutlineInputBorder(
+                    //   borderRadius: BorderRadius.circular(35),
+                    // ),
+                    labelText: '  Enter your number',
+                    // counterText:
+                    //     '*Please use a verified e-mail',
+                  ),
+                  autofocus: false,
+                  keyboardType: TextInputType.emailAddress,
+                  maxLength: 40,
+                  onChanged: (value) {
+                    numero = value;
+                  },
                 ),
-                autofocus: false,
-                keyboardType: TextInputType.emailAddress,
-                maxLength: 40,
-                onChanged: (value) {
-                  password = value;
-                },
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              MaterialButton(
-                shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(10.0),
+                SizedBox(
+                  height: 30,
                 ),
-                padding: EdgeInsets.all(10),
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    try {
-                      await FirebaseAuth.instance
-                          .createUserWithEmailAndPassword(
-                        email: email!,
-                        password: password!,
-                      );
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => homescreen(),
-                              maintainState: false));
-                      await FirebaseFirestore.instance
-                          .collection("utilisateur")
-                          .doc(_user!.uid)
-                          .set({
-                        "Email": email,
-                        "Password": password,
-                        "Name": name,
-                        "Number": numero,
-                      });
-                      await FirebaseFirestore.instance
-                          .collection("utilisateur")
-                          .doc(_user!.uid)
-                          .collection("Produit")
-                          .doc()
-                          .set({
-                        "Description": " ",
-                      });
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'weak-password') {
-                        var snackBar = SnackBar(
-                            backgroundColor: Colors.red,
-                            content: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'mot de passe faible',
-                                ),
-                              ],
-                            ));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      } else if (e.code == 'email-already-in-use') {
-                        var snackBar = SnackBar(
-                            backgroundColor: Colors.red,
-                            content: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'cette addresse e-mail est déja utilisé',
-                                ),
-                              ],
-                            ));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                TextField(
+                  //cursorColor: secondaryColor,
+                  decoration: InputDecoration(
+                    // hintStyle: GoogleFonts.raleway(),
+                    // labelStyle: GoogleFonts.raleway(),
+                    // counterStyle: GoogleFonts.raleway(),
+                    hintText: 'address@mail.com',
+                    // border: OutlineInputBorder(
+                    //   borderRadius: BorderRadius.circular(35),
+                    // ),
+                    labelText: '  addresse e-mail',
+                    // counterText:
+                    //     '*Please use a verified e-mail',
+                  ),
+                  autofocus: false,
+                  keyboardType: TextInputType.emailAddress,
+                  maxLength: 40,
+                  onChanged: (value) {
+                    email = value;
+                  },
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                TextField(
+                  //cursorColor: secondaryColor,
+                  decoration: InputDecoration(
+                    hintText: '*******',
+                    labelText: '  Password',
+                  ),
+                  autofocus: false,
+                  keyboardType: TextInputType.emailAddress,
+                  maxLength: 40,
+                  onChanged: (value) {
+                    password = value;
+                  },
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                MaterialButton(
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(10.0),
+                  ),
+                  padding: EdgeInsets.all(10),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      try {
+                        await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                          email: email!,
+                          password: password!,
+                        );
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => homescreen(),
+                                maintainState: false));
+                        await FirebaseFirestore.instance
+                            .collection("utilisateur")
+                            .doc(_user!.uid)
+                            .set({
+                          "Email": email,
+                          "Password": password,
+                          "Name": name,
+                          "Number": numero,
+                        });
+                        await FirebaseFirestore.instance
+                            .collection("utilisateur")
+                            .doc(_user!.uid)
+                            .collection("Produit")
+                            .doc()
+                            .set({
+                          "Description": " ",
+                        });
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'weak-password') {
+                          var snackBar = SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'mot de passe faible',
+                                  ),
+                                ],
+                              ));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        } else if (e.code == 'email-already-in-use') {
+                          var snackBar = SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'cette addresse e-mail est déja utilisé',
+                                  ),
+                                ],
+                              ));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      } catch (ex) {
+                        print(ex);
                       }
-                    } catch (ex) {
-                      print(ex);
                     }
-                  }
-                },
-                color: primaryColor,
-                child: Text(
-                  "Sign Up",
-                  style: TextStyle(),
+                  },
+                  color: primaryColor,
+                  child: Text(
+                    "Sign Up",
+                    style: TextStyle(),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 40,
-              ),
-            ],
+                SizedBox(
+                  height: 40,
+                ),
+              ],
+            ),
           ),
         ),
       ),
