@@ -1,8 +1,10 @@
 import 'package:e_commerce/constance.dart';
-import 'package:e_commerce/screen/cart.dart';
+import 'package:e_commerce/screen/Cart.dart';
+import 'package:e_commerce/screen/Post.dart';
+import 'package:e_commerce/screen/Profil.dart';
+
 import 'package:e_commerce/screen/homescreen.dart';
-import 'package:e_commerce/screen/post.dart';
-import 'package:e_commerce/screen/profil.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
