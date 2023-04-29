@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +24,7 @@ class _PostScreenState extends State<PostScreen> {
     String? nomProduit;
     String? prix;
     String? description;
+     File? _imageFile;
     User? _produit = FirebaseAuth.instance.currentUser;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -89,7 +92,7 @@ class _PostScreenState extends State<PostScreen> {
                   keyboardType: TextInputType.emailAddress,
                   maxLength: 40,
                   onChanged: (value) {
-                    prix = value;
+                    prix = value; 
                   },
                 ),
                 SizedBox(
@@ -110,6 +113,21 @@ class _PostScreenState extends State<PostScreen> {
                 SizedBox(
                   height: 15,
                 ),
+                SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: (){},
+                icon: Icon(Icons.photo),
+                label: Text('Télécharger une image'),
+              ),
+              if (_imageFile != null) ...[
+                SizedBox(height: 16),
+                Image.file(
+                  _imageFile!,
+                  width: 200,
+                  height: 200,
+                  fit: BoxFit.cover,
+                ),
+              ],
                 MaterialButton(
                     shape: new RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0),

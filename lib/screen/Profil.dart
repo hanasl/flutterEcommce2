@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
+import 'editprofil.dart';
 import 'login.dart';
 
 class ProfilScreen extends StatefulWidget {
@@ -55,7 +56,13 @@ class _ProfilScreenState extends State<ProfilScreen> {
             ),
             Container(
               child: MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditProfil(),
+                          maintainState: false));
+                },
                 child: ListTile(
                   title: Text("Edit Profile"),
                   leading: Image.asset(

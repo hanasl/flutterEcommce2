@@ -28,7 +28,7 @@ class _EditProfilState extends State<EditProfil> {
         leading: GestureDetector(
             onTap: () {
               Navigator.push(
-                  context, 
+                  context,
                   MaterialPageRoute(
                       builder: (context) => ProfilScreen(),
                       maintainState: false));
@@ -50,7 +50,7 @@ class _EditProfilState extends State<EditProfil> {
             child: Column(
               children: [
                 Text(
-                  "Sign Up,",
+                  "Edit Profil,",
                   style: TextStyle(
                     fontSize: 30,
                   ),
@@ -135,7 +135,7 @@ class _EditProfilState extends State<EditProfil> {
                   onPressed: () async {},
                   color: primaryColor,
                   child: Text(
-                    "Sign Up",
+                    "Modifier",
                     style: TextStyle(),
                   ),
                 ),
