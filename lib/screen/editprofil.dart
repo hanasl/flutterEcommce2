@@ -1,22 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:e_commerce/screen/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../constance.dart';
-import 'MainScreen.dart';
-import 'login.dart';
+import 'Profil.dart';
 
-class RegistreScreen extends StatefulWidget {
-  const RegistreScreen({super.key});
+class EditProfil extends StatefulWidget {
+  const EditProfil({super.key});
 
   @override
-  State<RegistreScreen> createState() => _RegistreScreenState();
+  State<EditProfil> createState() => _EditProfilState();
 }
 
-class _RegistreScreenState extends State<RegistreScreen> {
+class _EditProfilState extends State<EditProfil> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -24,7 +20,6 @@ class _RegistreScreenState extends State<RegistreScreen> {
     String? password;
     String? name;
     String? numero;
-    User? _user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -33,9 +28,9 @@ class _RegistreScreenState extends State<RegistreScreen> {
         leading: GestureDetector(
             onTap: () {
               Navigator.push(
-                  context,
+                  context, 
                   MaterialPageRoute(
-                      builder: (context) => loginScreen(),
+                      builder: (context) => ProfilScreen(),
                       maintainState: false));
             },
             child: Icon(
@@ -137,60 +132,7 @@ class _RegistreScreenState extends State<RegistreScreen> {
                     borderRadius: new BorderRadius.circular(10.0),
                   ),
                   padding: EdgeInsets.all(10),
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      try {
-                        await FirebaseAuth.instance
-                            .createUserWithEmailAndPassword(
-                          email: email!,
-                          password: password!,
-                        );
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => mainScreen(),
-                                maintainState: false));
-                        await FirebaseFirestore.instance
-                            .collection("utilisateur")
-                            .doc(_user!.uid)
-                            .set({
-                          "Email": email,
-                          "Password": password,
-                          "Name": name,
-                          "Number": numero,
-                        });
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'weak-password') {
-                          var snackBar = SnackBar(
-                              backgroundColor: Colors.red,
-                              content: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'mot de passe faible',
-                                  ),
-                                ],
-                              ));
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        } else if (e.code == 'email-already-in-use') {
-                          var snackBar = SnackBar(
-                              backgroundColor: Colors.red,
-                              content: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'cette addresse e-mail est déja utilisé',
-                                  ),
-                                ],
-                              ));
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-                      } catch (ex) {
-                        print(ex);
-                      }
-                    }
-                  },
+                  onPressed: () async {},
                   color: primaryColor,
                   child: Text(
                     "Sign Up",

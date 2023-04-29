@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+
+import 'login.dart';
 
 class ProfilScreen extends StatefulWidget {
   const ProfilScreen({super.key});
@@ -72,7 +75,10 @@ class _ProfilScreenState extends State<ProfilScreen> {
             ),
             Container(
               child: MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+
+                }
+                ,
                 child: ListTile(
                   title: Text("Shipping Address"),
                   leading: Image.asset(
@@ -152,7 +158,13 @@ class _ProfilScreenState extends State<ProfilScreen> {
             ),
             Container(
               child: MaterialButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => loginScreen(),
+                          maintainState: false));},
                 child: ListTile(
                   title: Text("LogOut"),
                   leading: Image.asset(

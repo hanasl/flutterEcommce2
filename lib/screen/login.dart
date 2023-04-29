@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
+import '../constance.dart';
+import 'MainScreen.dart';
+
 class loginScreen extends StatefulWidget {
   const loginScreen({super.key});
 
@@ -61,18 +64,9 @@ class _loginScreenState extends State<loginScreen> {
                 height: 10,
               ),
               TextField(
-                //cursorColor: secondaryColor,
                 decoration: InputDecoration(
-                  // hintStyle: GoogleFonts.raleway(),
-                  // labelStyle: GoogleFonts.raleway(),
-                  // counterStyle: GoogleFonts.raleway(),
                   hintText: 'address@mail.com',
-                  // border: OutlineInputBorder(
-                  //   borderRadius: BorderRadius.circular(35),
-                  // ),
                   labelText: '  addresse e-mail',
-                  // counterText:
-                  //     '*Please use a verified e-mail',
                 ),
                 autofocus: false,
                 keyboardType: TextInputType.emailAddress,
@@ -81,34 +75,17 @@ class _loginScreenState extends State<loginScreen> {
                   email = value;
                 },
               ),
-              Text("Forget Password?"),
-              SizedBox(
-                height: 20,
-              ),
               MaterialButton(
                 shape: new RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(10.0),
                 ),
                 padding: EdgeInsets.all(10),
-                onPressed: () {
-                  // Get.to(HomeView());
-                  /* _formKey.currentState?.save();
-                  if (_formKey.currentState!.validate()) {
-                    controller.signInWithEmailAndPassword();
-                  }*/
-                },
+                onPressed: () {},
                 // color: primaryColor,
                 child: TextField(
                   decoration: InputDecoration(
-                    // hintStyle: GoogleFonts.raleway(),
-                    // labelStyle: GoogleFonts.raleway(),
-                    // counterStyle: GoogleFonts.raleway(),
                     hintText: '*******',
-                    // border:
-                    //     OutlineInputBorder(borderRadius: BorderRadius.circular(35)),
                     labelText: '  Mot de passe',
-                    // counterText:
-                    //     '*Please use a verified e-mail',
                   ),
                   autofocus: false,
                   keyboardType: TextInputType.text,
@@ -119,20 +96,21 @@ class _loginScreenState extends State<loginScreen> {
                   },
                 ),
               ),
+              SizedBox(height: 10,),
+              Text("Forget Password?"),
+              SizedBox(
+                height: 20,
+              ),
               SizedBox(
                 height: 30,
               ),
-              // Text("-OR-"),
-              // SizedBox(
-              //   height: 40,
-              // ),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(11),
                   color: Colors.grey.shade50,
                 ),
                 child: MaterialButton(
-                  color: Colors.green,
+                  color: primaryColor,
                   onPressed: () async {
                     FocusScopeNode currentFocus = FocusScope.of(context);
                     if (!currentFocus.hasPrimaryFocus) {
@@ -147,38 +125,37 @@ class _loginScreenState extends State<loginScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => homescreen(),
+                              builder: (context) => mainScreen(),
                               maintainState: false));
                       // EasyLoading.showInfo(ex);
-                    } on FirebaseAuthException catch (ex) {
-                      if (ex.code == 'user-not-found') {
-                        print("not found");
-                        AnimatedSnackBar.material(
-                          "pas d'utilisateur avec cet e-mail",
-                          type: AnimatedSnackBarType.error,
-                          duration: Duration(seconds: 4),
-                          mobileSnackBarPosition: MobileSnackBarPosition
-                              .bottom, // Position of snackbar on mobile devices
-                        ).show(context);
-                      } else if (ex.code == 'wrong-password') {
-                        AnimatedSnackBar.material(
-                          'mot de passe incorrect',
-                          type: AnimatedSnackBarType.error,
-                          duration: Duration(seconds: 6),
-                          mobileSnackBarPosition: MobileSnackBarPosition
-                              .bottom, // Position of snackbar on mobile devices
-                          // Position of snackbar on desktop devices
-                        ).show(context);
-                      } else if (ex.code == 'invalid-email') {
-                        AnimatedSnackBar.material(
-                          'addresse-email est invalide',
-                          type: AnimatedSnackBarType.error,
-                          duration: Duration(seconds: 4),
-                          mobileSnackBarPosition: MobileSnackBarPosition
-                              .bottom, // Position of snackbar on mobile devices
-                          // Position of snackbar on desktop devices
-                        ).show(context);
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'weak-password') {
+                        var snackBar = SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'mot de passe faible',
+                                ),
+                              ],
+                            ));
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      } else if (e.code == 'email-already-in-use') {
+                        var snackBar = SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'cette addresse e-mail est déja utilisé',
+                                ),
+                              ],
+                            ));
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       }
+                    } catch (ex) {
+                      print(ex);
                     }
                   },
                   shape: new RoundedRectangleBorder(
@@ -187,10 +164,6 @@ class _loginScreenState extends State<loginScreen> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // FlutterLogo(),
-                        // SizedBox(
-                        //   width: 100,
-                        // ),
                         Text("Sign In "),
                       ]),
                 ),
