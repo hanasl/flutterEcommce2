@@ -1,10 +1,14 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../constance.dart';
@@ -22,7 +26,16 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final image = Provider.of<picture>(context);
+    final image = Provider.of<picture>(context, listen: false);
+    final Random _random = Random();
+    String? imageUrl1;
+
+    String generateRandomName(int length) {
+      const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+      return String.fromCharCodes(Iterable.generate(
+          length, (_) => chars.codeUnitAt(_random.nextInt(chars.length))));
+    }
+
     var _nomProjet = TextEditingController();
     var _nomProduit = TextEditingController();
     var _prix = TextEditingController();
@@ -31,7 +44,6 @@ class _PostScreenState extends State<PostScreen> {
     String? nomProduit;
     String? prix;
     String? description;
-    File? _imageFile;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -130,10 +142,28 @@ class _PostScreenState extends State<PostScreen> {
                   height: 15,
                 ),
                 ElevatedButton(
-                    child: Text("Gallery"), onPressed: () => image.addGallery(),
-                    style: ElevatedButton.styleFrom()
-                    ),
-                    
+                    child: Text("Gallery"),
+                    onPressed: () => image.addGallery(),
+                    style: ElevatedButton.styleFrom()),
+                InkWell(
+                  child: Text("tester upload"),
+                  onTap: () async {
+                    // print(image.imagee);
+                    //? houni atytou ism aleatoire
+
+                    final randomName = generateRandomName(10);
+                    //? edheya script li yaaml upload
+                    final ref = FirebaseStorage.instance
+                        .ref()
+                        .child('les produits')
+                        .child(randomName + '.jpg');
+                    await ref.putFile(image.imagee);
+
+                    imageUrl1 = await ref.getDownloadURL();
+                    print(imageUrl1);
+                    EasyLoading.showSuccess("mriguel");
+                  },
+                ),
                 MaterialButton(
                     shape: new RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0),
@@ -145,6 +175,17 @@ class _PostScreenState extends State<PostScreen> {
                     ),
                     padding: EdgeInsets.all(10),
                     onPressed: () async {
+                      print(image.imagee);
+
+                      final randomName = generateRandomName(10);
+
+                      final ref = FirebaseStorage.instance
+                          .ref()
+                          .child('les produits')
+                          .child(randomName + '.jpg');
+                      await ref.putFile(image.imagee);
+                      imageUrl1 = await ref.getDownloadURL();
+                      print(imageUrl1);
                       final User? _userr = FirebaseAuth.instance.currentUser;
                       final _uid = _userr!.uid;
                       await FirebaseFirestore.instance
@@ -157,6 +198,7 @@ class _PostScreenState extends State<PostScreen> {
                         "nomProduit": nomProduit,
                         "Prix": prix,
                         "Description": description,
+                        "imageUrl": imageUrl1
                       });
                     }),
                 SizedBox(
