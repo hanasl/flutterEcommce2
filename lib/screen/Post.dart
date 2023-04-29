@@ -5,10 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:provider/provider.dart';
 
 import '../constance.dart';
 import 'homescreen.dart';
 import 'login.dart';
+import 'package:e_commerce/provider/image.dart';
 
 class PostScreen extends StatefulWidget {
   @override
@@ -20,12 +22,17 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final image = Provider.of<picture>(context);
+    var _nomProjet = TextEditingController();
+    var _nomProduit = TextEditingController();
+    var _prix = TextEditingController();
+    var _description = TextEditingController();
     String? nomProjet;
     String? nomProduit;
     String? prix;
     String? description;
-     File? _imageFile;
-    User? _produit = FirebaseAuth.instance.currentUser;
+    File? _imageFile;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -53,6 +60,7 @@ class _PostScreenState extends State<PostScreen> {
                   height: 30,
                 ),
                 TextField(
+                  controller: _nomProjet,
                   //cursorColor: secondaryColor,
                   decoration: InputDecoration(
                     hintText: 'Nom Projet',
@@ -69,6 +77,7 @@ class _PostScreenState extends State<PostScreen> {
                   height: 10,
                 ),
                 TextField(
+                  controller: _nomProduit,
                   decoration: InputDecoration(
                     hintText: 'Nom Produit',
                     labelText: '  Entrer le nom de produit',
@@ -84,6 +93,7 @@ class _PostScreenState extends State<PostScreen> {
                   height: 10,
                 ),
                 TextField(
+                  controller: _prix,
                   decoration: InputDecoration(
                     hintText: 'Prix',
                     labelText: 'Entrer le prix',
@@ -92,13 +102,14 @@ class _PostScreenState extends State<PostScreen> {
                   keyboardType: TextInputType.emailAddress,
                   maxLength: 40,
                   onChanged: (value) {
-                    prix = value; 
+                    prix = value;
                   },
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 TextField(
+                  controller: _description,
                   decoration: InputDecoration(
                     hintText: 'Description',
                     labelText: 'Entrer la description',
@@ -113,21 +124,16 @@ class _PostScreenState extends State<PostScreen> {
                 SizedBox(
                   height: 15,
                 ),
-                SizedBox(height: 16),
-              ElevatedButton.icon(
-                onPressed: (){},
-                icon: Icon(Icons.photo),
-                label: Text('Télécharger une image'),
-              ),
-              if (_imageFile != null) ...[
-                SizedBox(height: 16),
-                Image.file(
-                  _imageFile!,
-                  width: 200,
-                  height: 200,
-                  fit: BoxFit.cover,
+                ElevatedButton(
+                    child: Text("camera"), onPressed: () => image.addCamera()),
+                SizedBox(
+                  height: 15,
                 ),
-              ],
+                ElevatedButton(
+                    child: Text("Gallery"), onPressed: () => image.addGallery(),
+                    style: ElevatedButton.styleFrom()
+                    ),
+                    
                 MaterialButton(
                     shape: new RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0),
@@ -139,9 +145,13 @@ class _PostScreenState extends State<PostScreen> {
                     ),
                     padding: EdgeInsets.all(10),
                     onPressed: () async {
+                      final User? _userr = FirebaseAuth.instance.currentUser;
+                      final _uid = _userr!.uid;
                       await FirebaseFirestore.instance
-                          .collection("Produit")
-                          .doc(_produit!.uid)
+                          .collection("utilisateur")
+                          .doc(_uid)
+                          .collection('produit')
+                          .doc()
                           .set({
                         "nomProjet": nomProjet,
                         "nomProduit": nomProduit,

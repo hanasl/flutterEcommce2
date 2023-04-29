@@ -24,7 +24,6 @@ class _RegistreScreenState extends State<RegistreScreen> {
     String? password;
     String? name;
     String? numero;
-    User? _user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -146,20 +145,23 @@ class _RegistreScreenState extends State<RegistreScreen> {
                           email: email!,
                           password: password!,
                         );
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => mainScreen(),
-                                maintainState: false));
+                        final User? _userr = FirebaseAuth.instance.currentUser;
+                        final _uid = _userr!.uid;
                         await FirebaseFirestore.instance
                             .collection("utilisateur")
-                            .doc(_user!.uid)
+                            .doc(_uid)
                             .set({
                           "Email": email,
                           "Password": password,
                           "Name": name,
                           "Number": numero,
+                          "id": _uid
                         });
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => mainScreen(),
+                        //         maintainState: false));
                       } on FirebaseAuthException catch (e) {
                         if (e.code == 'weak-password') {
                           var snackBar = SnackBar(
