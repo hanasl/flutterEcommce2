@@ -180,7 +180,6 @@ class _RegistreScreenState extends State<RegistreScreen> {
                           "Number": numero,
                         });
                         await FirebaseFirestore.instance
-                            .collection("utilisateur")
                             .doc(_user!.uid)
                             .collection("Produit")
                             .doc()

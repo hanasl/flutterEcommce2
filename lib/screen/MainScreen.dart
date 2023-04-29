@@ -20,31 +20,36 @@ class mainScreen extends StatelessWidget {
     List<Widget> _buildScreens() {
       return [
         homescreen(),
-        ProfilScreen(),
-        PostScreen(),
         CartScreen(),
+        PostScreen(),
+        ProfilScreen(),
       ];
     }
 
     List<PersistentBottomNavBarItem> _navBarsItems() {
       return [
         PersistentBottomNavBarItem(
-          iconSize: 25,
-          icon: Icon(CupertinoIcons.home),
+          icon: Padding(
+            padding: const EdgeInsets.only(top: 25.0),
+            child: Image.asset(
+              'asset/home.png',
+              fit: BoxFit.contain,
+              width: 20,
+            ),
+          ),
           title: ("Home"),
           activeColorPrimary: Colors.green,
-          //Color.fromARGB(255, 15, 114, 219),
           inactiveColorPrimary: Colors.grey,
         ),
         PersistentBottomNavBarItem(
           icon: Icon(CupertinoIcons.check_mark_circled),
-          title: ("My Ordre"),
+          title: ("Panier"),
           activeColorPrimary: Colors.green,
           inactiveColorPrimary: Colors.grey,
         ),
         PersistentBottomNavBarItem(
           icon: Icon(CupertinoIcons.heart_fill),
-          title: ("Favorites"),
+          title: ("Post"),
           activeColorPrimary: Colors.green,
           inactiveColorPrimary: Colors.grey,
         ),
@@ -52,9 +57,9 @@ class mainScreen extends StatelessWidget {
         PersistentBottomNavBarItem(
           iconSize: 28,
           icon: Icon(CupertinoIcons.chat_bubble_2),
-          title: ("Chat"),
+          title: ("Profil"),
           activeColorPrimary: primaryColor,
-          inactiveColorPrimary: Colors.white,
+          inactiveColorPrimary: Colors.grey,
         ),
         // PersistentBottomNavBarItem(
         //   icon: Image.asset('assets/images/user.png'),
@@ -68,12 +73,12 @@ class mainScreen extends StatelessWidget {
     return Scaffold(
         body: PersistentTabView(
       context,
-      navBarHeight: 47,
+      navBarHeight: 55,
       controller: _controller,
       screens: _buildScreens(),
       items: _navBarsItems(),
       confineInSafeArea: true,
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.grey.shade50,
       //Color.fromARGB(255, 219, 216, 231),
       // Color.fromARGB(255, 159, 139, 167),
       //, // Default is Colors.white.

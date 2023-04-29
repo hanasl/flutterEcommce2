@@ -26,177 +26,180 @@ class _loginScreenState extends State<loginScreen> {
         elevation: 0.0,
         backgroundColor: Colors.white,
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 50, right: 20, left: 20),
-        child: Form(
-          key: _formKey,
-          child: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Welcome,",
-                  style: TextStyle(color: Colors.black, fontSize: 30),
-                ),
-                GestureDetector(
-                  child: Text(
-                    "Sign Up",
-                    style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 18,
-                    ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 50, right: 20, left: 20),
+          child: Form(
+            key: _formKey,
+            child: Column(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Welcome,",
+                    style: TextStyle(color: Colors.black, fontSize: 30),
                   ),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RegistreScreen(),
-                            maintainState: false));
-                  },
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            TextField(
-              //cursorColor: secondaryColor,
-              decoration: InputDecoration(
-                // hintStyle: GoogleFonts.raleway(),
-                // labelStyle: GoogleFonts.raleway(),
-                // counterStyle: GoogleFonts.raleway(),
-                hintText: 'address@mail.com',
-                // border: OutlineInputBorder(
-                //   borderRadius: BorderRadius.circular(35),
-                // ),
-                labelText: '  addresse e-mail',
-                // counterText:
-                //     '*Please use a verified e-mail',
+                  GestureDetector(
+                    child: Text(
+                      "Sign Up",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 18,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => RegistreScreen(),
+                              maintainState: false));
+                    },
+                  ),
+                ],
               ),
-              autofocus: false,
-              keyboardType: TextInputType.emailAddress,
-              maxLength: 40,
-              onChanged: (value) {
-                email = value;
-              },
-            ),
-            Text("Forget Password?"),
-            SizedBox(
-              height: 20,
-            ),
-            MaterialButton(
-              shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(10.0),
+              SizedBox(
+                height: 10,
               ),
-              padding: EdgeInsets.all(10),
-              onPressed: () {
-                // Get.to(HomeView());
-                /* _formKey.currentState?.save();
-                if (_formKey.currentState!.validate()) {
-                  controller.signInWithEmailAndPassword();
-                }*/
-              },
-              // color: primaryColor,
-              child: TextField(
+              TextField(
+                //cursorColor: secondaryColor,
                 decoration: InputDecoration(
                   // hintStyle: GoogleFonts.raleway(),
                   // labelStyle: GoogleFonts.raleway(),
                   // counterStyle: GoogleFonts.raleway(),
-                  hintText: '*******',
-                  // border:
-                  //     OutlineInputBorder(borderRadius: BorderRadius.circular(35)),
-                  labelText: '  Mot de passe',
+                  hintText: 'address@mail.com',
+                  // border: OutlineInputBorder(
+                  //   borderRadius: BorderRadius.circular(35),
+                  // ),
+                  labelText: '  addresse e-mail',
                   // counterText:
                   //     '*Please use a verified e-mail',
                 ),
                 autofocus: false,
-                keyboardType: TextInputType.text,
-                obscureText: true,
-                maxLength: 8,
+                keyboardType: TextInputType.emailAddress,
+                maxLength: 40,
                 onChanged: (value) {
-                  password = value;
+                  email = value;
                 },
               ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            // Text("-OR-"),
-            // SizedBox(
-            //   height: 40,
-            // ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(11),
-                color: Colors.grey.shade50,
+              Text("Forget Password?"),
+              SizedBox(
+                height: 20,
               ),
-              child: MaterialButton(
-                color: Colors.green,
-                onPressed: () async {
-                  FocusScopeNode currentFocus = FocusScope.of(context);
-                  if (!currentFocus.hasPrimaryFocus) {
-                    currentFocus.unfocus();
-                  }
-                  //EasyLoading.showToast('Loading...');
-                  try {
-                    UserCredential user = await FirebaseAuth.instance
-                        .signInWithEmailAndPassword(
-                            email: email!.trim(), password: password!.trim());
-                    //  CircularProgressIndicator();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => homescreen(),
-                            maintainState: false));
-                    // EasyLoading.showInfo(ex);
-                  } on FirebaseAuthException catch (ex) {
-                    if (ex.code == 'user-not-found') {
-                      print("not found");
-                      AnimatedSnackBar.material(
-                        "pas d'utilisateur avec cet e-mail",
-                        type: AnimatedSnackBarType.error,
-                        duration: Duration(seconds: 4),
-                        mobileSnackBarPosition: MobileSnackBarPosition
-                            .bottom, // Position of snackbar on mobile devices
-                      ).show(context);
-                    } else if (ex.code == 'wrong-password') {
-                      AnimatedSnackBar.material(
-                        'mot de passe incorrect',
-                        type: AnimatedSnackBarType.error,
-                        duration: Duration(seconds: 6),
-                        mobileSnackBarPosition: MobileSnackBarPosition
-                            .bottom, // Position of snackbar on mobile devices
-                        // Position of snackbar on desktop devices
-                      ).show(context);
-                    } else if (ex.code == 'invalid-email') {
-                      AnimatedSnackBar.material(
-                        'addresse-email est invalide',
-                        type: AnimatedSnackBarType.error,
-                        duration: Duration(seconds: 4),
-                        mobileSnackBarPosition: MobileSnackBarPosition
-                            .bottom, // Position of snackbar on mobile devices
-                        // Position of snackbar on desktop devices
-                      ).show(context);
-                    }
-                  }
-                },
+              MaterialButton(
                 shape: new RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(10.0),
                 ),
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  // FlutterLogo(),
-                  // SizedBox(
-                  //   width: 100,
-                  // ),
-                  Text("Sign In "),
-                ]),
+                padding: EdgeInsets.all(10),
+                onPressed: () {
+                  // Get.to(HomeView());
+                  /* _formKey.currentState?.save();
+                  if (_formKey.currentState!.validate()) {
+                    controller.signInWithEmailAndPassword();
+                  }*/
+                },
+                // color: primaryColor,
+                child: TextField(
+                  decoration: InputDecoration(
+                    // hintStyle: GoogleFonts.raleway(),
+                    // labelStyle: GoogleFonts.raleway(),
+                    // counterStyle: GoogleFonts.raleway(),
+                    hintText: '*******',
+                    // border:
+                    //     OutlineInputBorder(borderRadius: BorderRadius.circular(35)),
+                    labelText: '  Mot de passe',
+                    // counterText:
+                    //     '*Please use a verified e-mail',
+                  ),
+                  autofocus: false,
+                  keyboardType: TextInputType.text,
+                  obscureText: true,
+                  maxLength: 8,
+                  onChanged: (value) {
+                    password = value;
+                  },
+                ),
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-          ]),
+              SizedBox(
+                height: 30,
+              ),
+              // Text("-OR-"),
+              // SizedBox(
+              //   height: 40,
+              // ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(11),
+                  color: Colors.grey.shade50,
+                ),
+                child: MaterialButton(
+                  color: Colors.green,
+                  onPressed: () async {
+                    FocusScopeNode currentFocus = FocusScope.of(context);
+                    if (!currentFocus.hasPrimaryFocus) {
+                      currentFocus.unfocus();
+                    }
+                    //EasyLoading.showToast('Loading...');
+                    try {
+                      UserCredential user = await FirebaseAuth.instance
+                          .signInWithEmailAndPassword(
+                              email: email!.trim(), password: password!.trim());
+                      //  CircularProgressIndicator();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => homescreen(),
+                              maintainState: false));
+                      // EasyLoading.showInfo(ex);
+                    } on FirebaseAuthException catch (ex) {
+                      if (ex.code == 'user-not-found') {
+                        print("not found");
+                        AnimatedSnackBar.material(
+                          "pas d'utilisateur avec cet e-mail",
+                          type: AnimatedSnackBarType.error,
+                          duration: Duration(seconds: 4),
+                          mobileSnackBarPosition: MobileSnackBarPosition
+                              .bottom, // Position of snackbar on mobile devices
+                        ).show(context);
+                      } else if (ex.code == 'wrong-password') {
+                        AnimatedSnackBar.material(
+                          'mot de passe incorrect',
+                          type: AnimatedSnackBarType.error,
+                          duration: Duration(seconds: 6),
+                          mobileSnackBarPosition: MobileSnackBarPosition
+                              .bottom, // Position of snackbar on mobile devices
+                          // Position of snackbar on desktop devices
+                        ).show(context);
+                      } else if (ex.code == 'invalid-email') {
+                        AnimatedSnackBar.material(
+                          'addresse-email est invalide',
+                          type: AnimatedSnackBarType.error,
+                          duration: Duration(seconds: 4),
+                          mobileSnackBarPosition: MobileSnackBarPosition
+                              .bottom, // Position of snackbar on mobile devices
+                          // Position of snackbar on desktop devices
+                        ).show(context);
+                      }
+                    }
+                  },
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(10.0),
+                  ),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // FlutterLogo(),
+                        // SizedBox(
+                        //   width: 100,
+                        // ),
+                        Text("Sign In "),
+                      ]),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+            ]),
+          ),
         ),
       ),
     ));
