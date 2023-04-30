@@ -1,172 +1,228 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce/screen/produit_vendeur.dart';
+import 'package:e_commerce/services/vendeurService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-import '../constance.dart';
-
-class homescreen extends StatefulWidget {
-  const homescreen({super.key});
+class homeScreen extends StatefulWidget {
+  const homeScreen({super.key});
 
   @override
-  State<homescreen> createState() => _homescreenState();
+  State<homeScreen> createState() => _homeScreenState();
 }
 
-class _homescreenState extends State<homescreen> {
-  final List<String> names = <String>[
-    'men',
-    's',
-    's',
-    's',
-    's',
-    's',
-    's',
-  ];
+class _homeScreenState extends State<homeScreen> {
+  Vendeur_service _vendeur_service = Vendeur_service();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+      body: Center(
         child: Container(
-          padding: EdgeInsets.only(top: 100, left: 20, right: 20),
-          child: Column(
-            children: [
-              _searchTextFormField(),
-              SizedBox(
-                height: 20,
-              ),
-              Text('Categories'),
-              SizedBox(
-                height: 20,
-              ),
-              _listViewCategory(),
-              SizedBox(
-                height: 20,
-              ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Text(
-                  'Best Selling',
-                  style: TextStyle(
-                    fontSize: 18,
+          height: MediaQuery.of(context).size.height * 0.7,
+          child: StreamBuilder<QuerySnapshot>(
+            stream: _vendeur_service.getVendeur(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot?> snapshot) {
+              // }
+              return Column(
+                verticalDirection: VerticalDirection.down,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 20,
+                        ),
+                        // Text('The Nearst Transporter',
+                        //     style: GoogleFonts.montserrat(
+                        //         textStyle: TextStyle(
+                        //       fontWeight: FontWeight.w400,
+                        //       color: taktak_color2,
+                        //       fontSize: 11,
+                        //     ))),
+                      ],
+                    ),
                   ),
-                ),
-                Text(
-                  'See All',
-                  style: TextStyle(
-                    fontSize: 16,
+                  SizedBox(
+                    height: 10,
                   ),
-                )
-              ]),
-              SizedBox(
-                height: 10,
-              ),
-              _listViewProducts()
-            ],
+                  Flexible(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(40),
+                              topLeft: Radius.circular(40)),
+                          color: Colors.white),
+                      child: ListView(
+                          scrollDirection: Axis.vertical,
+                          children: snapshot.data!.docs
+                              .map((DocumentSnapshot document) {
+                            return InkWell(
+                              onTap: () {
+                                EasyLoading.showInfo(document['id']);
+                                print(document['id']);
+                                print(document['Name']);
+                                print(document['Email']);
+                                print(document['Number']);
+
+                                pushNewScreenWithRouteSettings(context,
+                                    screen: produit_vendeur(
+                                      name: document['Name'],
+                                      uid: document['id'],
+                                      number: document['Email'],
+                                    ),
+                                    settings: RouteSettings(),
+                                    withNavBar: false,
+                                    pageTransitionAnimation:
+                                        PageTransitionAnimation.cupertino);
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                      padding: const EdgeInsets.only(),
+                                      child: Container(
+                                        decoration: new BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          color: Colors.transparent,
+                                        ),
+                                        child: ListTile(
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    horizontal: 15.0,
+                                                    vertical: 0.0),
+                                            leading: Container(
+                                              padding:
+                                                  EdgeInsets.only(right: 12.0),
+                                              decoration: BoxDecoration(
+                                                  border: Border(
+                                                      right: new BorderSide(
+                                                          width: 1.0,
+                                                          color: Color(
+                                                              0xFFD9D9D9)))),
+                                              child: CircleAvatar(
+                                                  radius: 30,
+                                                  backgroundImage: AssetImage(
+                                                      "asset/shoes.png")),
+                                            ),
+                                            title: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        CircleAvatar(
+                                                          backgroundImage:
+                                                              AssetImage(
+                                                                  "asset/payment.png"),
+                                                          radius: 8,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          "${document['Name']}",
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          // style: GoogleFonts.montserrat(
+                                                          //     textStyle: TextStyle(
+                                                          //         color:
+                                                          //             Colors.black,
+                                                          //         fontWeight: FontWeight.w400,
+                                                          //         fontSize: 15))
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Image.asset(
+                                                          "asset/historique.png",
+                                                          height: 15,
+                                                        ),
+                                                        SizedBox(
+                                                          width: 5,
+                                                        ),
+                                                        Text(
+                                                          "",
+                                                          // style: GoogleFonts.montserrat(
+                                                          //     textStyle: TextStyle(
+                                                          //         color:
+                                                          //             Colors.black,
+                                                          //         fontWeight: FontWeight.w400,
+                                                          //         fontSize: 15))
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            subtitle: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Image.asset(
+                                                  "asset/montre.jpg",
+                                                  height: 15,
+                                                ),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text(
+                                                  "",
+                                                  // style: GoogleFonts.montserrat(
+                                                  //     textStyle: TextStyle(
+                                                  //         fontSize: 8,
+                                                  //         color:
+                                                  //             taktak_color2,
+                                                  //         fontWeight:
+                                                  //             FontWeight
+                                                  //                 .w400)),
+                                                ),
+                                              ],
+                                            ),
+                                            trailing: Icon(
+                                                Icons.keyboard_arrow_right,
+                                                color: Color(0xFFD9D9D9),
+                                                size: 30.0)),
+                                      )),
+                                  Divider(
+                                    color: Color(0xFFD9D9D9),
+                                    indent: MediaQuery.of(context).size.width *
+                                        0.21,
+                                    endIndent:
+                                        MediaQuery.of(context).size.width *
+                                            0.21,
+                                    thickness: 1.5,
+                                  )
+                                ],
+                              ),
+                            );
+                          }).toList()),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _searchTextFormField() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.grey.shade200,
-      ),
-      child: TextFormField(
-        decoration: InputDecoration(
-            border: InputBorder.none,
-            prefixIcon: Icon(
-              Icons.search,
-              color: Colors.black,
-            )),
-      ),
-    );
-  }
-
-  Widget _listViewCategory() {
-    return Container(
-      height: 100,
-      child: ListView.separated(
-        itemCount: names.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: Colors.grey.shade100,
-                ),
-                height: 60,
-                width: 60,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(
-                    'asset/shoes.png',
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(names[index])
-            ],
-          );
-        },
-        separatorBuilder: (context, index) => SizedBox(
-          width: 20,
-        ),
-      ),
-    );
-  }
-
-  Widget _listViewProducts() {
-    return Container(
-      height: 320,
-      child: ListView.separated(
-        itemCount: names.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) {
-          return Container(
-            width: MediaQuery.of(context).size.width * .4,
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: Colors.grey.shade100,
-                  ),
-                  child: Container(
-                    height: 220,
-                    width: MediaQuery.of(context).size.width * .4,
-                    child: Image.asset('asset/montre.jpg'),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text('Montre'),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  'Montre',
-                  style: TextStyle(color: Colors.grey),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  '\$231',
-                  style: TextStyle(color: primaryColor),
-                ),
-              ],
-            ),
-          );
-        },
-        separatorBuilder: (context, index) => SizedBox(
-          width: 20,
         ),
       ),
     );

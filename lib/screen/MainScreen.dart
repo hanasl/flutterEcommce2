@@ -4,6 +4,7 @@ import 'package:e_commerce/screen/Post.dart';
 import 'package:e_commerce/screen/Profil.dart';
 
 import 'package:e_commerce/screen/homescreen.dart';
+import 'package:e_commerce/screen/postt.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +22,10 @@ class mainScreen extends StatelessWidget {
     _controller = PersistentTabController(initialIndex: 0);
     List<Widget> _buildScreens() {
       return [
-        homescreen(),
+        homeScreen(),
         CartScreen(),
-        PostScreen(),
+        postSCreen(),
+        // PostScreen(),
         ProfilScreen(),
       ];
     }
@@ -31,44 +33,34 @@ class mainScreen extends StatelessWidget {
     List<PersistentBottomNavBarItem> _navBarsItems() {
       return [
         PersistentBottomNavBarItem(
-          icon: Padding(
-            padding: const EdgeInsets.only(top: 25.0),
-            child: Image.asset(
-              'asset/home.png',
-              fit: BoxFit.contain,
-              width: 20,
-            ),
+          icon: Image.asset(
+            'asset/home.png',
+            fit: BoxFit.contain,
+            width: 20,
           ),
           title: ("Home"),
           activeColorPrimary: Colors.green,
           inactiveColorPrimary: Colors.grey,
         ),
         PersistentBottomNavBarItem(
-          icon: Icon(CupertinoIcons.check_mark_circled),
+          icon: Icon(Icons.accessibility_new),
           title: ("Panier"),
           activeColorPrimary: Colors.green,
           inactiveColorPrimary: Colors.grey,
         ),
         PersistentBottomNavBarItem(
-          icon: Icon(CupertinoIcons.heart_fill),
+          icon: Icon(Icons.add),
           title: ("Post"),
           activeColorPrimary: Colors.green,
           inactiveColorPrimary: Colors.grey,
         ),
-
         PersistentBottomNavBarItem(
           iconSize: 28,
-          icon: Icon(CupertinoIcons.chat_bubble_2),
+          icon: Icon(Icons.person),
           title: ("Profil"),
           activeColorPrimary: primaryColor,
           inactiveColorPrimary: Colors.grey,
         ),
-        // PersistentBottomNavBarItem(
-        //   icon: Image.asset('assets/images/user.png'),
-        //   title: ("My Account"),
-        //   activeColorPrimary: CupertinoColors.systemPurple,
-        //   inactiveColorPrimary: CupertinoColors.systemGrey,
-        // ),
       ];
     }
 
