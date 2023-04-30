@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class produit_vendeur extends StatefulWidget {
   final String name;
@@ -26,13 +27,6 @@ class _produit_vendeurState extends State<produit_vendeur> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // actions: [
-        //   TextButton(
-        //       onPressed: () {
-        //         EasyLoading.showInfo(_user!.uid);
-        //       },
-        //       child: Text(' get uid'))
-        // ],
         backgroundColor: primaryColor,
         title: Text(
           widget.name,
@@ -49,11 +43,10 @@ class _produit_vendeurState extends State<produit_vendeur> {
             stream: _vendeur_service.getProduitVendeur(widget.uid),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot?> snapshot) {
-              // }
               return Column(
                 verticalDirection: VerticalDirection.down,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(0),
@@ -63,13 +56,6 @@ class _produit_vendeurState extends State<produit_vendeur> {
                         SizedBox(
                           height: 20,
                         ),
-                        // Text('The Nearst Transporter',
-                        //     style: GoogleFonts.montserrat(
-                        //         textStyle: TextStyle(
-                        //       fontWeight: FontWeight.w400,
-                        //       color: taktak_color2,
-                        //       fontSize: 11,
-                        //     ))),
                       ],
                     ),
                   ),
@@ -128,17 +114,16 @@ class _produit_vendeurState extends State<produit_vendeur> {
                                                   Text(
                                                     "Prix :${document['Prix']}",
                                                     textAlign: TextAlign.left,
-                                                    // style: GoogleFonts.montserrat(
-                                                    //     textStyle: TextStyle(
-                                                    //         color:
-                                                    //             Colors.black,
-                                                    //         fontWeight: FontWeight.w400,
-                                                    //         fontSize: 15))
                                                   ),
                                                   SizedBox(
                                                     height: 20,
                                                   ),
-                                                  Text(document["Description"]),
+                                                  Text(
+                                                    document["Description"],
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                            letterSpacing: 5),
+                                                  ),
                                                   SizedBox(
                                                     width: 5,
                                                   ),
@@ -157,14 +142,6 @@ class _produit_vendeurState extends State<produit_vendeur> {
                                               ),
                                               Text(
                                                 "",
-                                                // style: GoogleFonts.montserrat(
-                                                //     textStyle: TextStyle(
-                                                //         fontSize: 8,
-                                                //         color:
-                                                //             taktak_color2,
-                                                //         fontWeight:
-                                                //             FontWeight
-                                                //                 .w400)),
                                               ),
                                             ],
                                           ),

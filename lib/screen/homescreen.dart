@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce/constance.dart';
 import 'package:e_commerce/screen/produit_vendeur.dart';
 import 'package:e_commerce/services/vendeurService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class homeScreen extends StatefulWidget {
@@ -40,13 +42,13 @@ class _homeScreenState extends State<homeScreen> {
                         SizedBox(
                           height: 20,
                         ),
-                        // Text('The Nearst Transporter',
-                        //     style: GoogleFonts.montserrat(
-                        //         textStyle: TextStyle(
-                        //       fontWeight: FontWeight.w400,
-                        //       color: taktak_color2,
-                        //       fontSize: 11,
-                        //     ))),
+                        Text('Tous les boutiques',
+                            style: GoogleFonts.montserrat(
+                                textStyle: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    color: primaryColor,
+                                    fontSize: 21,
+                                    letterSpacing: 4))),
                       ],
                     ),
                   ),
