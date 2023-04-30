@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -14,6 +15,25 @@ class ProfilScreen extends StatefulWidget {
 }
 
 class _ProfilScreenState extends State<ProfilScreen> {
+  DocumentSnapshot? T_token;
+
+  @override
+  void initState() {
+    getToken();
+    super.initState();
+  }
+
+  final User? _userr = FirebaseAuth.instance.currentUser;
+  //final _uid = _userr!.uid;
+  Future<DocumentSnapshot> getToken() async {
+    var result1 =
+        await FirebaseFirestore.instance.collection('Utlisateur').doc().get();
+    setState(() {
+      T_token = result1;
+    });
+    return result1;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +72,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
               ),
             ),
             SizedBox(
-              height: 60,
+              height: 60, 
             ),
             Container(
               child: MaterialButton(
@@ -82,10 +102,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
             ),
             Container(
               child: MaterialButton(
-                onPressed: () {
-
-                }
-                ,
+                onPressed: () {},
                 child: ListTile(
                   title: Text("Shipping Address"),
                   leading: Image.asset(
@@ -171,7 +188,8 @@ class _ProfilScreenState extends State<ProfilScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => loginScreen(),
-                          maintainState: false));},
+                          maintainState: false));
+                },
                 child: ListTile(
                   title: Text("LogOut"),
                   leading: Image.asset(

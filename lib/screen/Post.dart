@@ -136,6 +136,10 @@ class _PostScreenState extends State<PostScreen> {
                 SizedBox(
                   height: 15,
                 ),
+                Text("Ajouter des images"),
+                SizedBox(
+                  height: 15,
+                ),
                 ElevatedButton(
                     child: Text("camera"), onPressed: () => image.addCamera()),
                 SizedBox(
@@ -161,7 +165,7 @@ class _PostScreenState extends State<PostScreen> {
 
                     imageUrl1 = await ref.getDownloadURL();
                     print(imageUrl1);
-                    EasyLoading.showSuccess("mriguel");
+                    EasyLoading.showSuccess("Succesfull");
                   },
                 ),
                 MaterialButton(
