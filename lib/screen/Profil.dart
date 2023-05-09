@@ -72,7 +72,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
               ),
             ),
             SizedBox(
-              height: 60, 
+              height: 60,
             ),
             Container(
               child: MaterialButton(
@@ -207,6 +207,7 @@ class _ProfilScreenState extends State<ProfilScreen> {
             SizedBox(
               height: 8,
             ),
+            // Text('creer votre boutique')
           ],
         ),
       ),

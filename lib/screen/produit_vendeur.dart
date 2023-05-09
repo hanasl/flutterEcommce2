@@ -29,7 +29,7 @@ class _produit_vendeurState extends State<produit_vendeur> {
       appBar: AppBar(
         backgroundColor: primaryColor,
         title: Text(
-          widget.name,
+          "Les produits de ${widget.name}",
           style: TextStyle(
             letterSpacing: 3,
           ),
@@ -118,11 +118,22 @@ class _produit_vendeurState extends State<produit_vendeur> {
                                                   SizedBox(
                                                     height: 20,
                                                   ),
-                                                  Text(
-                                                    document["Description"],
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                            letterSpacing: 5),
+                                                  Container(
+                                                    height: 100,
+                                                    width: 230,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey[200],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                    child: Text(
+                                                      document["Description"],
+                                                      textAlign: TextAlign.left,
+                                                      style: GoogleFonts
+                                                          .montserrat(
+                                                              letterSpacing: 1),
+                                                    ),
                                                   ),
                                                   SizedBox(
                                                     width: 5,

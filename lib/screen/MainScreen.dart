@@ -2,6 +2,7 @@ import 'package:e_commerce/constance.dart';
 import 'package:e_commerce/screen/Cart.dart';
 import 'package:e_commerce/screen/Post.dart';
 import 'package:e_commerce/screen/Profil.dart';
+import 'package:e_commerce/screen/ajouterproduit.dart';
 
 import 'package:e_commerce/screen/homescreen.dart';
 import 'package:e_commerce/screen/postt.dart';
@@ -23,9 +24,8 @@ class mainScreen extends StatelessWidget {
     List<Widget> _buildScreens() {
       return [
         homeScreen(),
-        CartScreen(),
+        ajouterProduit(),
         postSCreen(),
-        // PostScreen(),
         ProfilScreen(),
       ];
     }
@@ -42,16 +42,23 @@ class mainScreen extends StatelessWidget {
           activeColorPrimary: Colors.green,
           inactiveColorPrimary: Colors.grey,
         ),
+        // PersistentBottomNavBarItem(
+        //   icon: Icon(Icons.accessibility_new),
+        //   title: ("Panier"),
+        //   activeColorPrimary: Colors.green,
+        //   inactiveColorPrimary: Colors.grey,
+        // ),
         PersistentBottomNavBarItem(
-          icon: Icon(Icons.accessibility_new),
-          title: ("Panier"),
+          icon: Icon(Icons.add),
+          title: ("Ajouter produit"),
           activeColorPrimary: Colors.green,
           inactiveColorPrimary: Colors.grey,
         ),
         PersistentBottomNavBarItem(
-          icon: Icon(Icons.add),
-          title: ("Post"),
-          activeColorPrimary: Colors.green,
+          iconSize: 28,
+          icon: Icon(Icons.person),
+          title: ("ajouter boutique"),
+          activeColorPrimary: primaryColor,
           inactiveColorPrimary: Colors.grey,
         ),
         PersistentBottomNavBarItem(

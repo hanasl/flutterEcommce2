@@ -155,7 +155,8 @@ class _RegistreScreenState extends State<RegistreScreen> {
                           "Password": password,
                           "Name": name,
                           "Number": numero,
-                          "id": _uid
+                          "id": _uid,
+                          "3andou boutique": "non"
                         });
                         // Navigator.push(
                         //     context,

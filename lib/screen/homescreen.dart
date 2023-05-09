@@ -69,16 +69,17 @@ class _homeScreenState extends State<homeScreen> {
                             return InkWell(
                               onTap: () {
                                 EasyLoading.showInfo(document['id']);
-                                print(document['id']);
-                                print(document['Name']);
-                                print(document['Email']);
-                                print(document['Number']);
+                                // print(document['id']);
+                                print(document['insta_boutique']);
+                                print(document['nom boutique']);
+                                print(document["id"]);
+                                // print(document['Number']);
 
                                 pushNewScreenWithRouteSettings(context,
                                     screen: produit_vendeur(
-                                      name: document['Name'],
+                                      name: document['nom boutique'],
                                       uid: document['id'],
-                                      number: document['Email'],
+                                      number: document['emailVendeur'],
                                     ),
                                     settings: RouteSettings(),
                                     withNavBar: false,
@@ -111,9 +112,10 @@ class _homeScreenState extends State<homeScreen> {
                                                           color: Color(
                                                               0xFFD9D9D9)))),
                                               child: CircleAvatar(
-                                                  radius: 30,
-                                                  backgroundImage: AssetImage(
-                                                      "asset/shoes.png")),
+                                                radius: 30,
+                                                backgroundImage: NetworkImage(
+                                                    "${document['image boutique']}"),
+                                              ),
                                             ),
                                             title: Row(
                                               mainAxisAlignment:
@@ -125,20 +127,20 @@ class _homeScreenState extends State<homeScreen> {
                                                   children: [
                                                     Row(
                                                       children: [
-                                                        CircleAvatar(
-                                                          backgroundImage:
-                                                              AssetImage(
-                                                                  "asset/payment.png"),
-                                                          radius: 8,
-                                                          backgroundColor:
-                                                              Colors
-                                                                  .transparent,
-                                                        ),
+                                                        // CircleAvatar(
+                                                        //   backgroundImage:
+                                                        //       NetworkImage(
+                                                        //           "${document['image boutique']}"),
+                                                        //   radius: 18,
+                                                        //   backgroundColor:
+                                                        //       Colors
+                                                        //           .transparent,
+                                                        // ),
                                                         SizedBox(
                                                           width: 5,
                                                         ),
                                                         Text(
-                                                          "${document['Name']}",
+                                                          "${document['nom boutique']}",
                                                           textAlign:
                                                               TextAlign.left,
                                                           // style: GoogleFonts.montserrat(
@@ -155,10 +157,8 @@ class _homeScreenState extends State<homeScreen> {
                                                           MainAxisAlignment
                                                               .center,
                                                       children: [
-                                                        Image.asset(
-                                                          "asset/historique.png",
-                                                          height: 15,
-                                                        ),
+                                                        Text(
+                                                            "${document['insta_boutique']}"),
                                                         SizedBox(
                                                           width: 5,
                                                         ),

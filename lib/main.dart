@@ -12,10 +12,15 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MultiProvider(
-    providers: [ChangeNotifierProvider(create: (_) => picture())],
-    child: MyApp(),
-  ));
+  runApp(
+    // MultiProvider(
+    // providers: [
+    //   ChangeNotifierProvider(create: (_) => picture())
+    //   ],
+    // child:
+    MyApp(),
+    // )
+  );
 }
 
 class MyApp extends StatelessWidget {

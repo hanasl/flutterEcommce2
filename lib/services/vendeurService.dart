@@ -2,14 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Vendeur_service {
   getVendeur() {
-    return FirebaseFirestore.instance.collection("utilisateur").snapshots();
+    return FirebaseFirestore.instance.collection("boutique").snapshots();
   }
 
   getProduitVendeur(V_id) {
     return FirebaseFirestore.instance
-        .collection("utilisateur")
+        .collection("boutique")
         .doc(V_id)
-        .collection("produit")
+        .collection("tous les produit")
         .snapshots();
   }
 }
