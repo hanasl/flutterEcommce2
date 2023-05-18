@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -73,7 +74,13 @@ class _ajouterProduitState extends State<ajouterProduit> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
-        title: Text("Ajouter produit"),
+        title: Text('Ajouter un produit',
+            style: GoogleFonts.montserrat(
+                textStyle: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                    fontSize: 21,
+                    letterSpacing: 4))),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -83,21 +90,8 @@ class _ajouterProduitState extends State<ajouterProduit> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 80,
+                  height: 20,
                 ),
-                // TextField(
-                //   controller: _nomBoutique,
-                //   decoration: InputDecoration(
-                //     hintText: 'Nom Projet',
-                //     labelText: "Entrer le nom du boutique",
-                //   ),
-                //   onChanged: (value) {
-                //     nom_boutique = value;
-                //   },
-                // ),
-                // SizedBox(
-                //   height: 30,
-                // ),
                 TextField(
                   controller: _nomProjet,
                   decoration: InputDecoration(
@@ -159,43 +153,14 @@ class _ajouterProduitState extends State<ajouterProduit> {
                     textAlignVertical: TextAlignVertical.center,
                     decoration: InputDecoration(
                       hintText: 'Description',
-                      // hintStyle: GoogleFonts.raleway(
-                      //   letterSpacing: 14,
-                      // ),
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.all(16),
                     ),
                   ),
                 ),
-                // TextField(
-                //   controller: _description,
-                //   decoration: InputDecoration(
-                //     hintText: 'Description',
-                //     labelText: 'Entrer la description',
-                //   ),
-                //   // autofocus: false,
-                //   keyboardType: TextInputType.emailAddress,
-                //   maxLength: 40,
-                //   onChanged: (value) {
-                //     description = value;
-                //   },
-                // ),
                 SizedBox(
                   height: 30,
                 ),
-                // TextField(
-                //   controller: _instagram,
-                //   decoration: InputDecoration(
-                //     hintText: 'insta boutique',
-                //     labelText: 'Entrer le compte instagram de la boutique',
-                //   ),
-                //   // autofocus: false,
-                //   keyboardType: TextInputType.emailAddress,
-                //   maxLength: 40,
-                //   onChanged: (value) {
-                //     insta_boutique = value;
-                //   },
-                // ),
                 SizedBox(
                   height: 15,
                 ),
@@ -221,7 +186,6 @@ class _ajouterProduitState extends State<ajouterProduit> {
                 SizedBox(
                   height: 15,
                 ),
-
                 SizedBox(
                   height: 20,
                 ),

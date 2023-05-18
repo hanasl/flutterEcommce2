@@ -1,27 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce/constance.dart';
-import 'package:e_commerce/screen/panierScreen.dart';
-import 'package:e_commerce/services/vendeurService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class produit_vendeur extends StatefulWidget {
+import '../constance.dart';
+import '../services/vendeurService.dart';
+
+class EditProduit extends StatefulWidget {
   final String name;
   final String uid;
   final String number;
 
-  const produit_vendeur(
+  const EditProduit(
       {super.key, required this.uid, required this.name, required this.number});
 
   @override
-  State<produit_vendeur> createState() => _produit_vendeurState();
+  State<EditProduit> createState() => _EditProduitState();
 }
 
-class _produit_vendeurState extends State<produit_vendeur> {
+class _EditProduitState extends State<EditProduit> {
   User? _user = FirebaseAuth.instance.currentUser;
   Vendeur_service _vendeur_service = Vendeur_service();
   @override
@@ -37,17 +36,6 @@ class _produit_vendeurState extends State<produit_vendeur> {
                     fontSize: 21,
                     letterSpacing: 4))),
         centerTitle: true,
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PanierScreen(),
-                        maintainState: false));
-              },
-              icon: Icon(Icons.shopping_cart))
-        ],
       ),
       body: Center(
         child: Container(

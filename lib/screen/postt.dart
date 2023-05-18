@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -74,7 +75,13 @@ class _postSCreenState extends State<postSCreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
-        title: Text("Ajouter boutique"),
+        title: Text('Ajouter une boutique',
+            style: GoogleFonts.montserrat(
+                textStyle: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                    fontSize: 21,
+                    letterSpacing: 4))),
         centerTitle: true,
       ),
       body: user_data["3andou boutique"] == 'oui'
@@ -82,7 +89,15 @@ class _postSCreenState extends State<postSCreen> {
               child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("ande9esh 7a9 tzid boutique okhra!!!!"),
+                Icon(
+                  Icons.dangerous_outlined,
+                  size: 100,
+                  color: Colors.red,
+                ),
+                Text(
+                  "Vous avez déja une boutique!!!",
+                  style: TextStyle(fontSize: 20, color: Colors.red),
+                ),
               ],
             ))
           : SingleChildScrollView(

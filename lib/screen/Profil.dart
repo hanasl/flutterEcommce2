@@ -3,7 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
+import '../services/vendeurService.dart';
+import 'EditProduit.dart';
 import 'editprofil.dart';
 import 'login.dart';
 
@@ -15,201 +18,196 @@ class ProfilScreen extends StatefulWidget {
 }
 
 class _ProfilScreenState extends State<ProfilScreen> {
-  DocumentSnapshot? T_token;
-
-  @override
-  void initState() {
-    getToken();
-    super.initState();
-  }
-
   final User? _userr = FirebaseAuth.instance.currentUser;
-  //final _uid = _userr!.uid;
-  Future<DocumentSnapshot> getToken() async {
-    var result1 =
-        await FirebaseFirestore.instance.collection('Utlisateur').doc().get();
-    setState(() {
-      T_token = result1;
-    });
-    return result1;
-  }
 
+  Vendeur_service _vendeur_service = Vendeur_service();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
       padding: EdgeInsets.only(top: 50),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(100)),
-                      image: DecorationImage(
-                          image: AssetImage('asset/montre.jpg')),
+      child: StreamBuilder<QuerySnapshot>(
+        stream: _vendeur_service.getVendeur(),
+        builder:
+            (BuildContext context, AsyncSnapshot<QuerySnapshot?> snapshot) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(100)),
+                        image: DecorationImage(
+                            image: AssetImage('asset/montre.jpg')),
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          'Hana',
+                          style: TextStyle(fontSize: 28),
+                        ),
+                        Text(
+                          'Hana@gmail.com',
+                          style: TextStyle(fontSize: 13),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 60,
+              ),
+              Container(
+                child: MaterialButton(
+                  onPressed: () {
+                    pushNewScreenWithRouteSettings(context,
+                        screen: EditProfil(),
+                        settings: RouteSettings(),
+                        withNavBar: false,
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino);
+                  },
+                  child: ListTile(
+                    title: Text("Modifier Profile"),
+                    leading: Image.asset(
+                      'asset/editprofil.png',
+                      width: 30,
+                      height: 30,
+                    ),
+                    trailing: Icon(
+                      Icons.navigate_next,
+                      color: Colors.black,
                     ),
                   ),
-                  Column(
-                    children: [
-                      Text(
-                        'Hana',
-                        style: TextStyle(fontSize: 28),
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+
+              Container(
+                child: MaterialButton(
+                  onPressed: () {},
+                  child: ListTile(
+                    title: Text("Historique"),
+                    leading: Image.asset(
+                      'asset/historique.png',
+                      width: 30,
+                      height: 30,
+                    ),
+                    trailing: Icon(
+                      Icons.navigate_next,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Container(
+                child: MaterialButton(
+                  onPressed: () {
+                    pushNewScreenWithRouteSettings(context,
+                        screen: EditProfil(),
+                        settings: RouteSettings(),
+                        withNavBar: false,
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.cupertino);
+                  },
+                  child: ListTile(
+                    title: Text("Modifier Votre Boutique"),
+                    leading: Image.asset(
+                      'asset/boutique.png',
+                      width: 30,
+                      height: 30,
+                    ),
+                    trailing: Icon(
+                      Icons.navigate_next,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Container(
+                child: ListView(
+                  children:
+                      snapshot.data!.docs.map((DocumentSnapshot document) {
+                    return InkWell(
+                      onTap: () {
+                        pushNewScreenWithRouteSettings(
+                          context,
+                          screen: EditProduit(
+                            name: document['nom boutique'],
+                            uid: document['id'],
+                            number: document['emailVendeur'],
+                          ),
+                          settings: RouteSettings(),
+                          withNavBar: false,
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino,
+                        );
+                      },
+                      child: ListTile(
+                        title: Text("Vos produits"),
+                        leading: Image.asset(
+                          'asset/produit.png',
+                          width: 30,
+                          height: 30,
+                        ),
+                        trailing: Icon(
+                          Icons.navigate_next,
+                          color: Colors.black,
+                        ),
                       ),
-                      Text(
-                        'Hana@gmail.com',
-                        style: TextStyle(fontSize: 13),
-                      )
-                    ],
-                  )
-                ],
+                    );
+                  }).toList(),
+                ),
               ),
-            ),
-            SizedBox(
-              height: 60,
-            ),
-            Container(
-              child: MaterialButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EditProfil(),
-                          maintainState: false));
-                },
-                child: ListTile(
-                  title: Text("Edit Profile"),
-                  leading: Image.asset(
-                    'asset/editprofil.png',
-                    width: 30,
-                    height: 30,
-                  ),
-                  trailing: Icon(
-                    Icons.navigate_next,
-                    color: Colors.black,
+              SizedBox(
+                height: 8,
+              ),
+              Container(
+                child: MaterialButton(
+                  onPressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => loginScreen(),
+                            maintainState: false));
+                  },
+                  child: ListTile(
+                    title: Text("LogOut"),
+                    leading: Image.asset(
+                      'asset/logoutt.png',
+                      width: 30,
+                      height: 30,
+                    ),
+                    trailing: Icon(
+                      Icons.navigate_next,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Container(
-              child: MaterialButton(
-                onPressed: () {},
-                child: ListTile(
-                  title: Text("Shipping Address"),
-                  leading: Image.asset(
-                    'asset/localisation.png',
-                    width: 30,
-                    height: 30,
-                  ),
-                  trailing: Icon(
-                    Icons.navigate_next,
-                    color: Colors.black,
-                  ),
-                ),
+              SizedBox(
+                height: 8,
               ),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Container(
-              child: MaterialButton(
-                onPressed: () {},
-                child: ListTile(
-                  title: Text("Order History"),
-                  leading: Image.asset(
-                    'asset/historique.png',
-                    width: 30,
-                    height: 30,
-                  ),
-                  trailing: Icon(
-                    Icons.navigate_next,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Container(
-              child: MaterialButton(
-                onPressed: () {},
-                child: ListTile(
-                  title: Text("Cards"),
-                  leading: Image.asset(
-                    'asset/payment.png',
-                    width: 30,
-                    height: 30,
-                  ),
-                  trailing: Icon(
-                    Icons.navigate_next,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Container(
-              child: MaterialButton(
-                onPressed: () {},
-                child: ListTile(
-                  title: Text("Notification"),
-                  leading: Image.asset(
-                    'asset/notification.png',
-                    width: 30,
-                    height: 30,
-                  ),
-                  trailing: Icon(
-                    Icons.navigate_next,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Container(
-              child: MaterialButton(
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => loginScreen(),
-                          maintainState: false));
-                },
-                child: ListTile(
-                  title: Text("LogOut"),
-                  leading: Image.asset(
-                    'asset/logoutt.png',
-                    width: 30,
-                    height: 30,
-                  ),
-                  trailing: Icon(
-                    Icons.navigate_next,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            // Text('creer votre boutique')
-          ],
-        ),
+              // Text('creer votre boutique')
+            ],
+          );
+        },
       ),
     ));
   }

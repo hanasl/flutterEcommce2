@@ -5,6 +5,7 @@ import 'package:e_commerce/screen/Profil.dart';
 import 'package:e_commerce/screen/ajouterproduit.dart';
 
 import 'package:e_commerce/screen/homescreen.dart';
+import 'package:e_commerce/screen/panierScreen.dart';
 import 'package:e_commerce/screen/postt.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -12,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+
+import 'chatScreenHome.dart';
 
 class mainScreen extends StatelessWidget {
   const mainScreen({super.key});
@@ -26,6 +29,8 @@ class mainScreen extends StatelessWidget {
         homeScreen(),
         ajouterProduit(),
         postSCreen(),
+        chatScreenHome(),
+        PanierScreen(),
         ProfilScreen(),
       ];
     }
@@ -33,31 +38,35 @@ class mainScreen extends StatelessWidget {
     List<PersistentBottomNavBarItem> _navBarsItems() {
       return [
         PersistentBottomNavBarItem(
-          icon: Image.asset(
-            'asset/home.png',
-            fit: BoxFit.contain,
-            width: 20,
-          ),
+          icon: Icon(Icons.home),
           title: ("Home"),
           activeColorPrimary: Colors.green,
           inactiveColorPrimary: Colors.grey,
         ),
-        // PersistentBottomNavBarItem(
-        //   icon: Icon(Icons.accessibility_new),
-        //   title: ("Panier"),
-        //   activeColorPrimary: Colors.green,
-        //   inactiveColorPrimary: Colors.grey,
-        // ),
         PersistentBottomNavBarItem(
           icon: Icon(Icons.add),
-          title: ("Ajouter produit"),
+          title: ("Ajouter Produit"),
           activeColorPrimary: Colors.green,
           inactiveColorPrimary: Colors.grey,
         ),
         PersistentBottomNavBarItem(
           iconSize: 28,
-          icon: Icon(Icons.person),
-          title: ("ajouter boutique"),
+          icon: Icon(Icons.add),
+          title: ("Ajouter Boutique "),
+          activeColorPrimary: primaryColor,
+          inactiveColorPrimary: Colors.grey,
+        ),
+        PersistentBottomNavBarItem(
+          iconSize: 28,
+          icon: Icon(Icons.message),
+          title: ("Chat"),
+          activeColorPrimary: primaryColor,
+          inactiveColorPrimary: Colors.grey,
+        ),
+        PersistentBottomNavBarItem(
+          iconSize: 28,
+          icon: Icon(Icons.shopping_cart),
+          title: ("Panier"),
           activeColorPrimary: primaryColor,
           inactiveColorPrimary: Colors.grey,
         ),

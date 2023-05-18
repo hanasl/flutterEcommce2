@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
+import '../constance.dart';
 import 'MainScreen.dart';
 import 'homescreen.dart';
 import 'login.dart';
@@ -45,6 +46,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      backgroundColor: primaryColor,
+      body: Image.asset('name'),
+    );
   }
 }

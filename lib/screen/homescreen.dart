@@ -9,6 +9,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
+import 'listeProduit.dart';
+
 class homeScreen extends StatefulWidget {
   const homeScreen({super.key});
 
@@ -21,6 +23,17 @@ class _homeScreenState extends State<homeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: primaryColor,
+        title: Text('Tous les boutiques',
+            style: GoogleFonts.montserrat(
+                textStyle: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                    fontSize: 21,
+                    letterSpacing: 4))),
+        centerTitle: true,
+      ),
       body: Center(
         child: Container(
           height: MediaQuery.of(context).size.height * 0.7,
@@ -28,32 +41,37 @@ class _homeScreenState extends State<homeScreen> {
             stream: _vendeur_service.getVendeur(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot?> snapshot) {
-              // }
               return Column(
-                verticalDirection: VerticalDirection.down,
+                //verticalDirection: VerticalDirection.down,
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text('Tous les boutiques',
-                            style: GoogleFonts.montserrat(
-                                textStyle: TextStyle(
-                                    fontWeight: FontWeight.w800,
-                                    color: primaryColor,
-                                    fontSize: 21,
-                                    letterSpacing: 4))),
-                      ],
-                    ),
+                  Text(
+                    "It's a good day to shopping!!",
+                    style: TextStyle(color: Colors.pink, fontSize: 23),
                   ),
                   SizedBox(
                     height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.grey.shade200,
+                      ),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: Colors.black,
+                            )),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
                   ),
                   Flexible(
                     child: Container(
@@ -61,7 +79,7 @@ class _homeScreenState extends State<homeScreen> {
                           borderRadius: BorderRadius.only(
                               topRight: Radius.circular(40),
                               topLeft: Radius.circular(40)),
-                          color: Colors.white),
+                          color: Colors.grey.shade200),
                       child: ListView(
                           scrollDirection: Axis.vertical,
                           children: snapshot.data!.docs
@@ -69,14 +87,13 @@ class _homeScreenState extends State<homeScreen> {
                             return InkWell(
                               onTap: () {
                                 EasyLoading.showInfo(document['id']);
-                                // print(document['id']);
                                 print(document['insta_boutique']);
                                 print(document['nom boutique']);
                                 print(document["id"]);
                                 // print(document['Number']);
 
                                 pushNewScreenWithRouteSettings(context,
-                                    screen: produit_vendeur(
+                                    screen: ListeProduit(
                                       name: document['nom boutique'],
                                       uid: document['id'],
                                       number: document['emailVendeur'],
@@ -127,15 +144,6 @@ class _homeScreenState extends State<homeScreen> {
                                                   children: [
                                                     Row(
                                                       children: [
-                                                        // CircleAvatar(
-                                                        //   backgroundImage:
-                                                        //       NetworkImage(
-                                                        //           "${document['image boutique']}"),
-                                                        //   radius: 18,
-                                                        //   backgroundColor:
-                                                        //       Colors
-                                                        //           .transparent,
-                                                        // ),
                                                         SizedBox(
                                                           width: 5,
                                                         ),
@@ -143,36 +151,13 @@ class _homeScreenState extends State<homeScreen> {
                                                           "${document['nom boutique']}",
                                                           textAlign:
                                                               TextAlign.left,
-                                                          // style: GoogleFonts.montserrat(
-                                                          //     textStyle: TextStyle(
-                                                          //         color:
-                                                          //             Colors.black,
-                                                          //         fontWeight: FontWeight.w400,
-                                                          //         fontSize: 15))
+                                                          style: TextStyle(
+                                                            fontSize: 20,
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                            "${document['insta_boutique']}"),
-                                                        SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Text(
-                                                          "",
-                                                          // style: GoogleFonts.montserrat(
-                                                          //     textStyle: TextStyle(
-                                                          //         color:
-                                                          //             Colors.black,
-                                                          //         fontWeight: FontWeight.w400,
-                                                          //         fontSize: 15))
-                                                        ),
-                                                      ],
-                                                    ),
+                                                    SizedBox(height: 10),
                                                   ],
                                                 ),
                                               ],
@@ -182,22 +167,16 @@ class _homeScreenState extends State<homeScreen> {
                                                   MainAxisAlignment.start,
                                               children: [
                                                 Image.asset(
-                                                  "asset/montre.jpg",
-                                                  height: 15,
+                                                  "asset/instaa.png",
+                                                  height: 20,
                                                 ),
                                                 SizedBox(
                                                   width: 5,
                                                 ),
                                                 Text(
-                                                  "",
-                                                  // style: GoogleFonts.montserrat(
-                                                  //     textStyle: TextStyle(
-                                                  //         fontSize: 8,
-                                                  //         color:
-                                                  //             taktak_color2,
-                                                  //         fontWeight:
-                                                  //             FontWeight
-                                                  //                 .w400)),
+                                                    "${document['insta_boutique']}"),
+                                                SizedBox(
+                                                  width: 5,
                                                 ),
                                               ],
                                             ),
