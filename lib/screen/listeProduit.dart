@@ -67,8 +67,8 @@ class _ListeProduitState extends State<ListeProduit> {
               final products = snapshot.data!.docs;
               return GridView.builder(
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
-                  childAspectRatio: 2.8 / 3.4,
+                  maxCrossAxisExtent: 250,
+                  childAspectRatio: 2.8 / 4.4,
                   crossAxisSpacing: 14,
                   mainAxisSpacing: 14,
                 ),
@@ -98,10 +98,13 @@ class _ListeProduitState extends State<ListeProduit> {
                               height: 100,
                               width: 220,
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(14),
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          "${product['imageUrl']}"))),
+                                borderRadius: BorderRadius.circular(14),
+                                // image: DecorationImage(
+                                //     image: NetworkImage(
+                                //         "${product['imageUrl']}"
+                                //         )
+                                //         )
+                              ),
                             ),
                           ),
                           SizedBox(
