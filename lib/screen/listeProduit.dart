@@ -139,7 +139,7 @@ class _ListeProduitState extends State<ListeProduit> {
             } else if (snapshot.hasError) {
               return Text("Une erreur s'est produite.");
             } else {
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             }
           },
         ),
