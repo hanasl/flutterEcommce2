@@ -119,23 +119,23 @@ class _chatScreenState extends State<chatScreen> {
                     if (message.isNotEmpty) {
                       await FirebaseFirestore.instance
                           .collection('utilisateur')
-                          .doc(_uid)
-                          .collection('messages')
                           .doc(widget.id)
+                          .collection('messages')
+                          .doc(_uid)
                           .collection('chats')
                           .add({
                         "sender_id": _uid,
                         "receiver_id": widget.id,
                         "message": message,
-                        "date": DateTime.now()
+                        "date": DateTime.now(),
+                        "type": "text",
                       }).then((value) {
                         FirebaseFirestore.instance
                             .collection('utilisateur')
-                            .doc(_uid)
-                            .collection('messages')
                             .doc(widget.id)
-                            .update(
-                                {'last_msg': message, 'date': DateTime.now()});
+                            .collection('messages')
+                            .doc(_uid)
+                            .set({'last_msg': message, 'date': DateTime.now()});
                       });
                       await FirebaseFirestore.instance
                           .collection('utilisateur')
@@ -147,7 +147,8 @@ class _chatScreenState extends State<chatScreen> {
                         "sender_id": _uid,
                         "receiver_id": widget.id,
                         "message": message,
-                        "date": DateTime.now()
+                        "date": DateTime.now(),
+                        "type": "text",
                       });
                     }
                   },
