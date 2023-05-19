@@ -124,7 +124,29 @@ class _ListeProduitState extends State<ListeProduit> {
                               ),
 
                               TextButton(
-                                  onPressed: (() {}),
+                                  onPressed: () async {
+                                    final User? _user =
+                                        FirebaseAuth.instance.currentUser;
+                                    final _uid = _user!.uid;
+                                    await FirebaseFirestore.instance
+                                        .collection("utilisateur")
+                                        .doc(_uid)
+                                        .collection("panier")
+                                        .doc()
+                                        .collection("mon panier")
+                                        .doc()
+                                        .set({
+                                      "product": product["Description"],
+                                      "prix": "Prix :${product['Prix']}",
+                                    }).then((value) {
+                                      FirebaseFirestore.instance
+                                          .collection("utilisateur")
+                                          .doc(_uid)
+                                          .collection("panier")
+                                          .doc()
+                                          .set({"prix_total": ''});
+                                    });
+                                  },
                                   child: Text(
                                     "Add to cart",
                                     style: TextStyle(color: primaryColor),

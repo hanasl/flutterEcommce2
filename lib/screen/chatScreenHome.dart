@@ -22,7 +22,7 @@ class _chatScreenHomeState extends State<chatScreenHome> {
         body: Column(
       children: [
         SizedBox(
-          height: 70,
+          height: 40,
         ),
         Expanded(
           child: StreamBuilder(
@@ -33,66 +33,67 @@ class _chatScreenHomeState extends State<chatScreenHome> {
                 .snapshots(),
             builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
-                if (snapshot.data.docs.length == 0) {
+                if (snapshot.data.docs.length < 1) {
                   return Center(
                     child: Text(
                       'No Chats Yet',
                       style: GoogleFonts.montserrat(fontSize: 16),
                     ),
                   );
-                } else {
-                  return ListView.builder(
-                    itemCount: snapshot.data.docs.length,
-                    itemBuilder: (context, index) {
-                      var U_id = snapshot.data.docs[index].id;
-                      // var lastMsg = snapshot.data.docs[index]['last_msg'];
-                      return FutureBuilder(
-                          future: FirebaseFirestore.instance
-                              .collection('utilisateur')
-                              .doc(U_id)
-                              .get(),
-                          builder: (context, AsyncSnapshot asyncSnapshot) {
-                            if (asyncSnapshot.hasData) {
-                              var client = asyncSnapshot.data;
-                              return ListTile(
-                                title: Text(
-                                  client['Name'],
-                                  style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Container(
-                                    // child: Text(
-                                    //   // "${lastMsg}",
-                                    //   style: TextStyle(
-                                    //       color: Colors.grey,
-                                    //       overflow: TextOverflow.ellipsis),
-                                    // ),
-                                    ),
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => chatScreen(
-                                                id: client["id"],
-                                                name: client["Name"],
-                                                number: client["Number"],
-
-                                                //  c_pic: transporter['image']
-                                              )));
-                                },
-                              );
-                            } else {
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.green,
-                                ),
-                              );
-                            }
-                          });
-                    },
-                  );
                 }
+                return ListView.separated(
+                  separatorBuilder: (BuildContext context, int index) =>
+                      SizedBox(height: 5),
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (context, index) {
+                    var U_id = snapshot.data.docs[index].id;
+                    var lastMsg = snapshot.data.docs[index]['last_msg'];
+                    return FutureBuilder(
+                        future: FirebaseFirestore.instance
+                            .collection('utilisateur')
+                            .doc(U_id)
+                            .get(),
+                        builder: (context, AsyncSnapshot asyncSnapshot) {
+                          var client = asyncSnapshot.data;
+                          if (asyncSnapshot.hasData) {
+                            return ListTile(
+                              title: Text(
+                                client['Name'],
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Container(
+                                child: Text(
+                                  "${lastMsg}",
+                                  style: TextStyle(
+                                      color: Colors.grey,
+                                      overflow: TextOverflow.ellipsis),
+                                ),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => chatScreen(
+                                              id: client["id"],
+                                              name: client["Name"],
+                                              number: client["Number"],
+
+                                              //  c_pic: transporter['image']
+                                            )));
+                              },
+                            );
+                          } else {
+                            return Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.green,
+                              ),
+                            );
+                          }
+                        });
+                  },
+                );
               }
               return Center(
                   child: CircularProgressIndicator(

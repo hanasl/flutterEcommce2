@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce/constance.dart';
 import 'package:e_commerce/screen/widget/message.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class chatScreen extends StatefulWidget {
   final String id;
@@ -21,11 +23,24 @@ class chatScreen extends StatefulWidget {
 class _chatScreenState extends State<chatScreen> {
   @override
   Widget build(BuildContext context) {
+    final phoneNumber = "tel:${widget.number}";
     final User? userr = FirebaseAuth.instance.currentUser;
     final _uid = userr!.uid;
     TextEditingController _controller = TextEditingController();
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: primaryColor,
+        title: Text(widget.name),
+        centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () async {
+                await launch(phoneNumber);
+              },
+              icon: Icon(Icons.call))
+        ],
+      ),
       body: Column(
         children: [
           Expanded(
@@ -139,9 +154,9 @@ class _chatScreenState extends State<chatScreen> {
                       });
                       await FirebaseFirestore.instance
                           .collection('utilisateur')
-                          .doc(widget.id)
-                          .collection('messages')
                           .doc(_uid)
+                          .collection('messages')
+                          .doc(widget.id)
                           .collection('chats')
                           .add({
                         "sender_id": _uid,
@@ -149,6 +164,13 @@ class _chatScreenState extends State<chatScreen> {
                         "message": message,
                         "date": DateTime.now(),
                         "type": "text",
+                      }).then((value) {
+                        FirebaseFirestore.instance
+                            .collection('utilisateur')
+                            .doc(_uid)
+                            .collection('messages')
+                            .doc(widget.id)
+                            .set({'last_msg': message, 'date': DateTime.now()});
                       });
                     }
                   },
