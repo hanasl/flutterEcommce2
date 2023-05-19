@@ -75,7 +75,62 @@ class _ListeProduitState extends State<ListeProduit> {
                 itemCount: products.length,
                 itemBuilder: (BuildContext ctx, index) {
                   final product = products[index];
-                  return CustomItem(); // Replace with your custom item widget
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 150,
+                      //alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: Color.fromARGB(115, 227, 206, 206),
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Column(
+                        children: [
+                          ////Row(
+                          //children: [
+                          //IconButton(
+                          // onPressed: (() {}),
+                          // icon: Icon(Icons.heat_pump_rounded))
+                          // ],
+                          //),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Container(
+                              height: 100,
+                              width: 220,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                          "${product['imageUrl']}"))),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            "Prix :${product['Prix']}",
+                            style: TextStyle(color: primaryColor),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            product["Description"],
+                            style: TextStyle(color: primaryColor),
+                          ),
+
+                          TextButton(
+                              onPressed: (() {}),
+                              child: Text(
+                                "Add to cart",
+                                style: TextStyle(color: primaryColor),
+                              ))
+                        ],
+                      ),
+
+                      // Text("your text"),
+                    ),
+                  ); // Replace with your custom item widget
                 },
               );
             } else if (snapshot.hasError) {
@@ -122,7 +177,7 @@ class CustomItem extends StatelessWidget {
               height: 5,
             ),
             Text(
-              " Price 250",
+              'rrrr',
               style: TextStyle(color: Colors.orange),
             ),
             SizedBox(

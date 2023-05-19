@@ -48,7 +48,12 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primaryColor,
-      body: Image.asset('name'),
+      body: Center(
+          child: Icon(
+        Icons.shopping_cart_outlined,
+        size: 200,
+        color: Colors.white,
+      )),
     );
   }
 }
