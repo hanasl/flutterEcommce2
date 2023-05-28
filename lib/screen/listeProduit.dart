@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce/screen/chatScreen.dart';
 import 'package:e_commerce/screen/panierScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -57,89 +58,133 @@ class _ListeProduitState extends State<ListeProduit> {
           ),
         ],
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height * 0.7,
-        child: StreamBuilder<QuerySnapshot>(
-          stream: _vendeur_service.getProduitVendeur(widget.uid),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot?> snapshot) {
-            if (snapshot.hasData) {
-              final products = snapshot.data!.docs;
-              return GridView.builder(
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
-                  childAspectRatio: 2.8 / 3.4,
-                  crossAxisSpacing: 14,
-                  mainAxisSpacing: 14,
-                ),
-                itemCount: products.length,
-                itemBuilder: (BuildContext ctx, index) {
-                  final product = products[index];
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 150,
-                      //alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: Color.fromARGB(115, 227, 206, 206),
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Column(
-                        children: [
-                          ////Row(
-                          //children: [
-                          //IconButton(
-                          // onPressed: (() {}),
-                          // icon: Icon(Icons.heat_pump_rounded))
-                          // ],
-                          //),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4.0),
-                            child: Container(
-                              height: 100,
-                              width: 220,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(14),
-                                  image: DecorationImage(
-                                      image: NetworkImage(
-                                          "${product['imageUrl']}"))),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            "Prix :${product['Prix']}",
-                            style: TextStyle(color: primaryColor),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            product["Description"],
-                            style: TextStyle(color: primaryColor),
-                          ),
-
-                          TextButton(
-                              onPressed: (() {}),
-                              child: Text(
-                                "Add to cart",
-                                style: TextStyle(color: primaryColor),
-                              ))
-                        ],
-                      ),
-
-                      // Text("your text"),
+      body: Column(
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height * 0.7,
+            child: StreamBuilder<QuerySnapshot>(
+              stream: _vendeur_service.getProduitVendeur(widget.uid),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot?> snapshot) {
+                if (snapshot.hasData) {
+                  final products = snapshot.data!.docs;
+                  return GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 250,
+                      childAspectRatio: 2.8 / 3.4,
+                      crossAxisSpacing: 14,
+                      mainAxisSpacing: 14,
                     ),
-                  ); // Replace with your custom item widget
-                },
-              );
-            } else if (snapshot.hasError) {
-              return Text("Une erreur s'est produite.");
-            } else {
-              return CircularProgressIndicator();
-            }
-          },
-        ),
+                    itemCount: products.length,
+                    itemBuilder: (BuildContext ctx, index) {
+                      final product = products[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 150,
+                          //alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(115, 227, 206, 206),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Column(
+                            children: [
+                              ////Row(
+                              //children: [
+                              //IconButton(
+                              // onPressed: (() {}),
+                              // icon: Icon(Icons.heat_pump_rounded))
+                              // ],
+                              //),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: Container(
+                                  height: 100,
+                                  width: 220,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                              "${product['imageUrl']}"))),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                "Prix :${product['Prix']}",
+                                style: TextStyle(color: primaryColor),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                product["Description"],
+                                style: TextStyle(color: primaryColor),
+                              ),
+
+                              TextButton(
+                                  onPressed: () async {
+                                    final User? _user =
+                                        FirebaseAuth.instance.currentUser;
+                                    final _uid = _user!.uid;
+                                    await FirebaseFirestore.instance
+                                        .collection("utilisateur")
+                                        .doc(_uid)
+                                        .collection("panier")
+                                        .doc()
+                                        .collection("mon panier")
+                                        .doc()
+                                        .set({
+                                      "product": product["Description"],
+                                      "prix": "Prix :${product['Prix']}",
+                                    }).then((value) {
+                                      FirebaseFirestore.instance
+                                          .collection("utilisateur")
+                                          .doc(_uid)
+                                          .collection("panier")
+                                          .doc()
+                                          .set({"prix_total": ''});
+                                    });
+                                  },
+                                  child: Text(
+                                    "Add to cart",
+                                    style: TextStyle(color: primaryColor),
+                                  ))
+                            ],
+                          ),
+
+                          // Text("your text"),
+                        ),
+                      ); // Replace with your custom item widget
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return Text("Une erreur s'est produite.");
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final User? userr = FirebaseAuth.instance.currentUser;
+              final _uid = userr!.uid;
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => chatScreen(
+                      name: widget.name,
+                      number: widget.number,
+                      id: widget.uid,
+                    ),
+                  ));
+            },
+            child: Text("Contacter cette Boutique"),
+            style: ElevatedButton.styleFrom(backgroundColor: primaryColor),
+          )
+        ],
       ),
     );
   }
